@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  front:
+    container_name: am_ai_assistant_front
+    build:
+      context: .
+      dockerfile: assistant-front/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - chromadb
+  am_rag:
+    container_name: am_ai_assistant_rag_core
+    build:
+      context: .
+      dockerfile: assistant-api-core/Dockerfile
+    ports:
+      - "9000:9000"
+    depends_on:
+      - postgres
+      - chromadb
+
+  postgres:
+    container_name: am_ai_assistant_postgres
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  chromadb:
+    container_name: am_ai_assistant_chromadb
+    image: ghcr.io/chroma-core/chroma:latest
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - CHROMA_DB_IMPL=duckdb+parquet
+      - CHROMA_SERVER_ENABLE_GRPC=false
+      - CHROMA_SERVER_HTTP_PORT=8000
+
+volumes:
+  pgdata:
