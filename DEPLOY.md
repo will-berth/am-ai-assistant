@@ -110,6 +110,10 @@ JWT_TOKEN=token_copiado_de_strapi
 ### 4. Reiniciar el Servicio API
 
 ```bash
+docker compose up -d --force-recreate am_rag
+```
+o
+```bash
 docker compose up -d --build am_rag
 ```
 
@@ -124,6 +128,9 @@ docker compose up -d --build am_rag
    - **description**: Rich text (Blocks)  
    - **added_at**: Date (datetime)
 5. Guarda la colección
+
+# 🎉 Sistema activo
+AM AI Assistant esta listo para usarse ingresando a `http://localhost:3000`
 
 ## 🌐 Acceso a los Servicios
 
