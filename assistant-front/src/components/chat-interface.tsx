@@ -240,7 +240,7 @@ export function ChatInterface() {
                             disabled={isLoading}
                             className="bg-background border-2 focus:border-blue-500 transition-colors pr-12"
                         />
-                        <Button
+                        {/* <Button
                             onClick={() => fileInputRef.current?.click()}
                             variant="ghost"
                             size="sm"
@@ -248,7 +248,7 @@ export function ChatInterface() {
                             disabled={isLoading}
                         >
                             {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Paperclip className="h-4 w-4" />}
-                        </Button>
+                        </Button> */}
                     </div>
                     <Button
                         onClick={handleSendMessage}
@@ -260,16 +260,16 @@ export function ChatInterface() {
                     </Button>
                 </div>
 
-                <input
+                {/* <input
                     ref={fileInputRef}
                     type="file"
                     multiple
                     accept=".txt,.csv,text/plain,text/csv"
                     onChange={(e) => handleFileSelect(e.target.files)}
                     className="hidden"
-                />
+                /> */}
 
-                {isDragOver && (
+                {/* {isDragOver && (
                     <div className="absolute inset-0 bg-blue-500/10 border-2 border-dashed border-blue-400 rounded-lg flex items-center justify-center">
                         <div className="text-center">
                             <Upload className="h-8 w-8 text-blue-500 mx-auto mb-2" />
@@ -277,7 +277,7 @@ export function ChatInterface() {
                             <p className="text-blue-500 text-sm">Solo archivos TXT y CSV</p>
                         </div>
                     </div>
-                )}
+                )} */}
             </div>
         </div>
     )
