@@ -87,12 +87,9 @@ Instrucciones:
             print(relevant_docs)
             
             if not relevant_docs:
-                return {
-                    "answer": "No encontré información relevante para responder tu pregunta.",
-                    "context_found": False,
-                    "sources": [],
-                    "question": question
-                }
+                data = ChatData(answer="No encontré información relevante para responder tu pregunta.")
+                return 200, ResponseUtils.success(data=data, message="Assintan responded successfully")
+            
             
             context = self._build_context(relevant_docs)
             
