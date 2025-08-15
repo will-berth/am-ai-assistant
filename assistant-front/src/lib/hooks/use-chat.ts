@@ -35,7 +35,7 @@ export function useChat() {
                 const response: ChatMessage = {
                     id: Date.now().toString(),
                     role: "assistant",
-                    content: data.data.response,
+                    content: data.data.answer,
                     timestamp: new Date(),
                 }
                 setChatState((prev) => ({

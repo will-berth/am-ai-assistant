@@ -130,7 +130,7 @@ export function ChatInterface() {
             onDrop={handleDrop}
         >
 
-            <CardContent className="flex-1 p-0">
+            <CardContent className="flex-1 p-0 h-[500px]">
                 <ScrollArea ref={scrollAreaRef} className="h-full px-6">
                     <div className="space-y-6 py-4">
                         {messages.length === 0 && (
@@ -228,7 +228,7 @@ export function ChatInterface() {
                     </div>
                 )}
 
-                {/* <div className="flex gap-3">
+                <div className="flex gap-3">
                     <div className="flex-1 relative">
                         <Input
                             value={inputMessage}
@@ -237,7 +237,7 @@ export function ChatInterface() {
                             placeholder={
                                 attachedFiles.length > 0 ? "Mensaje opcional..." : "Escribe tu mensaje o arrastra archivos TXT/CSV..."
                             }
-                            disabled={isLoading || isUploading}
+                            disabled={isLoading}
                             className="bg-background border-2 focus:border-blue-500 transition-colors pr-12"
                         />
                         <Button
@@ -245,20 +245,20 @@ export function ChatInterface() {
                             variant="ghost"
                             size="sm"
                             className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600"
-                            disabled={isLoading || isUploading}
+                            disabled={isLoading}
                         >
-                            {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Paperclip className="h-4 w-4" />}
+                            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Paperclip className="h-4 w-4" />}
                         </Button>
                     </div>
                     <Button
                         onClick={handleSendMessage}
-                        disabled={(!inputMessage.trim() && attachedFiles.length === 0) || isLoading || isUploading}
+                        disabled={(!inputMessage.trim() && attachedFiles.length === 0) || isLoading }
                         size="icon"
                         className="bg-gradient-to-r from-[#64CF76] to-[#4263C8] hover:from-blue-600 hover:to-blue-700 shadow-lg h-10 w-10"
                     >
-                        {isLoading || isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                        {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                     </Button>
-                </div> */}
+                </div>
 
                 <input
                     ref={fileInputRef}

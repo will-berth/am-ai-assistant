@@ -6,7 +6,7 @@ export interface ApiResponse<T = any> {
 }
 
 export interface ChatMessageResponse {
-    response: string
+    answer: string
 }
 export interface ChatMessage {
     id: string

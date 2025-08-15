@@ -6,13 +6,19 @@ from sqlalchemy.orm import Session
 from ..models.file_model import FileRecord
 from ..models.schemas import FileUploadResponse, FileInfo, FileUploadData, PaginationInfo, FilesListData
 from ..utils.file_processor import FileProcessor
+from .chunk_service import ChunkService
 from ..config.settings import settings
 from ..utils.response_utils import ResponseUtils
+from .embedding_service import EmbeddingService
+from .vector_db_service import VectorDBService
 
 class FileService:
     
     def __init__(self):
         self.file_processor = FileProcessor()
+        self.chunk_service = ChunkService()
+        self.embedding_service = EmbeddingService()
+        self.vector_db_service = VectorDBService()
         self.upload_dir = settings.UPLOAD_DIR
         self.max_file_size = settings.MAX_FILE_SIZE
         os.makedirs(self.upload_dir, exist_ok=True)
@@ -58,6 +64,20 @@ class FileService:
                     file_path, file_extension
                 )
                 file_record.content_preview = self.file_processor.get_content_preview(file_content)
+
+                chunks = self.chunk_service.create_chunks(file_content, file_extension)
+                embeddings = await self.embedding_service.create_embeddings(chunks)
+                documents = self.embedding_service.prepare_document_embeddings(file_record.file_id, chunks)
+                
+                chunks_data = {
+                    "chunks": chunks,
+                    "embeddings": embeddings,
+                    "documents": documents,
+                    "total_chunks": len(chunks)
+                }
+
+                storage_result = await self.vector_db_service.store_document_chunks(file_record.file_id, chunks_data)
+                
             except Exception as e:
                 print(f"Warning: Could not process file content: {e}")
             

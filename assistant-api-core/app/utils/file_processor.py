@@ -1,5 +1,7 @@
 import pandas as pd
 from typing import Dict, Any
+import re
+import csv
 
 class FileProcessor:
     
@@ -20,12 +22,15 @@ class FileProcessor:
             raise Exception(f"Error reading CSV file: {str(e)}")
     
     async def read_file_content(self, file_path: str, file_type: str) -> str:
+        content = ""
         if file_type.lower() == "txt":
-            return await self.read_txt_file(file_path)
+            content = await self.read_txt_file(file_path)
         elif file_type.lower() == "csv":
-            return await self.read_csv_file(file_path)
+            content = await self.read_csv_file(file_path)
         else:
             raise ValueError(f"Unsupported file type: {file_type}")
+        
+        return self.clean_text_content(content, file_type)
     
     def get_content_preview(self, content: str, max_length: int = 500) -> str:
         if len(content) <= max_length:
@@ -42,3 +47,11 @@ class FileProcessor:
             }
         except Exception:
             return {"exists": False}
+    
+    def clean_text_content(self, content: str, type: str) -> str:
+        content = re.sub(r"[^\x20-\x7E\n]", "", content)
+        content = re.sub(r"[ \t]+", " ", content)
+        content = re.sub(r"\n{2,}", "\n", content)
+        content = content.strip()
+
+        return content

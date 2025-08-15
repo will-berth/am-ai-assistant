@@ -4,9 +4,10 @@ from ..services.file_service import FileService
 from ..models.schemas import ChatRequest, ChatResponse, ChatData
 from ..utils.response_utils import ResponseUtils
 from fastapi.responses import JSONResponse
+from ..services.rag_service import RAGService
 
 router = APIRouter(prefix="/assistant", tags=["Assistant"])
-file_service = FileService()
+rag_service = RAGService()
 
 @router.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
@@ -21,10 +22,12 @@ async def chat(request: ChatRequest):
             }
         )
     
-    response = 'HOLA BRO'
-    data = ChatData(
-        response=response,
-    )
+    code, response = await rag_service.query_documents(request.message)
+    
+    if not response.success:
+        return JSONResponse(
+            status_code=code,
+            content=response.model_dump()
+        )
 
-    result = ResponseUtils.success(data=data, message="Assintan responded successfully")
-    return result
+    return response

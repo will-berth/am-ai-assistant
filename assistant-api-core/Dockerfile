@@ -18,6 +18,11 @@ COPY --from=builder /install /usr/local
 
 COPY --from=builder /app /app
 
-EXPOSE 9000
+# ARG para build-time
+ARG APP_PORT=9000
+ENV APP_PORT=${APP_PORT}
 
-CMD ["gunicorn", "app.main:app", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:9000"]
+EXPOSE ${APP_PORT}
+
+# CMD ["gunicorn", "app.main:app", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:9000"]
+CMD gunicorn app.main:app -w 1 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:${APP_PORT}

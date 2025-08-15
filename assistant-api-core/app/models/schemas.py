@@ -45,7 +45,7 @@ class FilesListData(BaseModel):
     pagination: PaginationInfo
 
 class ChatData(BaseModel):
-    response: str
+    answer: str
 
 FileUploadResponse = ApiResponse[FileUploadData]
 FilesListResponse = ApiResponse[FilesListData]
